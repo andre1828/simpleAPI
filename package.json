@@ -4,9 +4,9 @@
   "description": "simple api",
   "main": "simpleAPI.js",
   "scripts": {
+    "start" : "node simpleAPI.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "start" : "simpleAPI",
   "author": "\"André Rodrigues Melo\"",
   "license": "MIT",
   "dependencies": {
