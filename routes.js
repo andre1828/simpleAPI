@@ -1,38 +1,52 @@
 var appRouter = function(app) {
 
-    var todos = [
-
+    var pedidos = [
       {
-        title : 'sei la',
-        date : '12/08/16'
+        sabor : 'Marguerita',
+        formaPagamento : 3
       },
       {
-        title : 'testando',
-        date : '12/09/16'
-      },
-      {
-        title : 'comprar biscoito',
-        date : '12/10/16'
-      },
-
+        sabor : 'Quatro queijos',
+        formaPagamento : 1
+      }
     ];
 
+    var formaPagamentos = {
+      1 : 'Dinheiro',
+      2 : 'Cartao',
+      3 : 'Deus lhe pague'
+    };
+
     app.get('/', function(req, res) {
-        res.send('MAHALOOO');
+        res.send('Pizzaria MP API');
     });
 
-    app.get('/todos', function(req, res) {
-        res.send( JSON.stringify(todos) );
+    app.get('/pedidos', function(req, res) {
+        for (var i = 0; i < pedidos.length; i++) {
+          pedidos[i].id = i;
+        }
+        res.json(pedidos);
     });
 
-    app.post('/todos', function(req, res) {
-        console.log(req.body);
-        var newTodo = {
-          title : req.body.title,
-          date : req.body.date
+    app.get('/pedidos/pedido/:index', function(req, res, next) {
+        var pedidoSolicitado = pedidos[req.params.index] || {};
+        res.send(pedidoSolicitado);
+    });
+
+    app.post('/pedidos', function(req, res) {
+        var formaPagamento = parseInt(req.body.formaPagamento);
+
+        if (!req.body.sabor || !req.body.formaPagamento || [1, 2, 3].indexOf(formaPagamento) === -1 ) {
+            res.send("Solicitação inválida, ausência de um ou mais argumentos");
+            return;
+        }
+
+        var novoPedido = {
+            sabor: req.body.sabor,
+            formaPagamento: req.body.formaPagamento
         };
-        todos.push(newTodo);
-        res.send( JSON.stringify(todos) );
+        pedidos.push(novoPedido);
+        res.json(novoPedido);
     });
 
 }
